@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 
@@ -44,7 +46,7 @@ public class BaseClass {
             for (Page page : pages) {
                 List<Paragraph> praList = page.getAllParagraphs();
                 for (Paragraph paragraph : praList) {
-                    String paraText = readParaText(paragraph, bw2);
+                    String paraText = readParaText(paragraph, bw2).get("paraText");
                     bw1.write("Paragraph :: " + i++);
                     bw1.write("\n");
                     bw1.write(paraText);
@@ -71,8 +73,9 @@ public class BaseClass {
         return pages;
     }
 
-    public String readParaText(Paragraph para, BufferedWriter bw2) throws IOException {
+    public HashMap<String,String> readParaText(Paragraph para, BufferedWriter bw2) throws IOException {
         String paraText = "";
+        HashMap<String,String> wordDetail = new HashMap<String,String>();
         List<String> lines = para.getAllLinesAsString();
         for (String line : lines) {
             String[] words = line.split(" ");
@@ -91,10 +94,15 @@ public class BaseClass {
         String subtype = getsubtype(wordList, lastIndex);
         String cmpltPartOfSpeech = partOfSpeech + " " + subtype;
         String meaning = getEngMeanig(wordList);
+        wordDetail.put("paraText", paraText);
+        wordDetail.put("word", wordList[0]);
+        wordDetail.put("transliteration", translation);
+        wordDetail.put("POS", cmpltPartOfSpeech);
+        wordDetail.put("meaning", meaning);
         bw2.write("\n");
         bw2.write(wordList[0] + "    ||  " + translation + " || " + cmpltPartOfSpeech + " || " + meaning);
         bw2.write("\n");
-        return paraText;
+        return wordDetail;
     }
 
     public String getTransliteration(String[] wordList) {

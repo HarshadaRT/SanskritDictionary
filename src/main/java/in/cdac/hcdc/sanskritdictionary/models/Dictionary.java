@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package in.cdac.hcdc.models;
+package in.cdac.hcdc.sanskritdictionary.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Dictionary {
     
     @Id
-    ObjectId _id;
+    ObjectId id;
     private String pageId;
     private String word;
     private String transliteration;
@@ -28,11 +28,11 @@ public class Dictionary {
     }
 
     public ObjectId getId() {
-        return _id;
+        return id;
     }
 
     public void setId(ObjectId _id) {
-        this._id = _id;
+        this.id = id;
     }
 
     public String getPageId() {
@@ -77,7 +77,7 @@ public class Dictionary {
 
     @Override
     public String toString() {
-        return "Dictionary{" + "_id=" + _id + ", pageId=" + pageId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
+        return "Dictionary{" + "id=" + id + ", pageId=" + pageId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
     }
 
     

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package in.cdac.hcdc.services;
+package in.cdac.hcdc.sanskritdictionary.service;
 
 import in.cdac.hcdc.hocr4j.Page;
 import in.cdac.hcdc.hocr4j.Paragraph;
 import in.cdac.hcdc.hocr4j.dom.HocrParser;
-import in.cdac.hcdc.models.Dictionary;
+import in.cdac.hcdc.sanskritdictionary.models.Dictionary;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,11 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Jyoti, Mahima
  */
+@Repository
 public class DictionaryService {
 
     BufferedWriter bw1 = null;

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package in.cdac.hcdc.repositories;
+package in.cdac.hcdc.sanskritdictionary.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import in.cdac.hcdc.models.Dictionary;
+import in.cdac.hcdc.sanskritdictionary.models.Dictionary;
 
 /**
  *

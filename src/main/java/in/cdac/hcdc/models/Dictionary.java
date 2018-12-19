@@ -18,6 +18,7 @@ public class Dictionary {
     
     @Id
     ObjectId _id;
+    private String pageId;
     private String word;
     private String transliteration;
     private String posTag;
@@ -32,6 +33,14 @@ public class Dictionary {
 
     public void setId(ObjectId _id) {
         this._id = _id;
+    }
+
+    public String getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(String pageId) {
+        this.pageId = pageId;
     }
 
     public String getWord() {
@@ -68,7 +77,7 @@ public class Dictionary {
 
     @Override
     public String toString() {
-        return "Dictionary{" + "_id=" + _id + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
+        return "Dictionary{" + "_id=" + _id + ", pageId=" + pageId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
     }
 
     

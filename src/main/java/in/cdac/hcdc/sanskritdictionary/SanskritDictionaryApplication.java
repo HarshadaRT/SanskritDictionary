@@ -6,14 +6,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import in.cdac.hcdc.models.Dictionary;
+import in.cdac.hcdc.services.DictionaryService;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-
-
 
 @SpringBootApplication
 @EnableMongoRepositories("in.cdac.hcdc.repositories")
@@ -24,6 +27,8 @@ public class SanskritDictionaryApplication extends SpringBootServletInitializer 
     @Autowired
     DictionaryRepository dictRepo;
 
+    DictionaryService dictionaryService = new DictionaryService();
+
     public static void main(String[] args) {
         System.out.println("In main");
         SpringApplication.run(SanskritDictionaryApplication.class, args);
@@ -31,14 +36,11 @@ public class SanskritDictionaryApplication extends SpringBootServletInitializer 
 
     @Override
     public void run(String... strings) throws Exception {
-        Dictionary dict = new Dictionary();
-        dict.setId(ObjectId.get());
-        dict.setWord("अधर्मासूचक");
-        dict.setTransliteration("adharmasicaka");
-        dict.setPosTag("adj.");
-        dict.setMeaning("not disclosing (i. e, conceal—ण्ह) अण्णा १५ अधर्मासूचकश्चापि राजानिष्टमुपेक्षकः 4(1). 106.");
-
-        Dictionary dictionary = dictRepo.save(dict);
+        File hocrFile = new File("C:\\Users\\Mahima\\Downloads\\data\\1519_1.hocr");
+        List<Dictionary> dict = new ArrayList<>();
+        dict = dictionaryService.parseHocrFile(hocrFile);
+        Iterable<Dictionary> iterable = dict;
+        List<Dictionary> dictionary = dictRepo.saveAll(iterable);
         System.out.println("saved in DB " + dictionary);
     }
 

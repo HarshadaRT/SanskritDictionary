@@ -47,7 +47,7 @@ public class DictionaryController {
     DictionaryService dictionaryService;
 
     @RequestMapping(value = "/{imagePath}", method = RequestMethod.POST)
-    public List<Dictionary> createDictionary(@PathVariable String imagePath) {//@Valid @RequestBody Dictionary dictionary) {
+    public List<Dictionary> createDictionary(@PathVariable String imagePath) {
         File hocrFile = new File(imagePath);//"C:\\Users\\Mahima\\Downloads\\data\\1519_1.hocr");
         List<Dictionary> dict = new ArrayList<>();
         dict = dictionaryService.parseHocrFile(hocrFile);
@@ -59,35 +59,31 @@ public class DictionaryController {
 
     @RequestMapping(value = "/populate", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject populateDictionary() throws JsonProcessingException {//@Valid @RequestBody Dictionary dictionary) {
+    public JSONObject populateDictionary() throws JsonProcessingException {
         System.out.println("inside populate");
+        HashMap<ObjectId, String> idAndWord = new HashMap<ObjectId, String>();
         JSONObject jsonObject = new JSONObject();
         List<Dictionary> dictionary = repository.findAll();
-        List js = new ArrayList();
-        for (Dictionary dic : dictionary) {
-            js.add(dic.getWord());
+        for(Dictionary dct : dictionary){
+            idAndWord.put(dct.getId(), dct.getWord());
         }
-
         Gson gsonObj = new Gson();
-        String json = gsonObj.toJson(js);
-
+        String json = gsonObj.toJson(idAndWord);
         jsonObject.put("idAndWord", json);
         System.out.println("check 1 " + json);
         return jsonObject;
     }
 
-    @RequestMapping(value = "/fetchMeaning/{word}", method = RequestMethod.GET)
+    @RequestMapping(value = "/fetchMeaning/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getMeaning(@PathVariable String word) {//@Valid @RequestBody Dictionary dictionary) {
-        System.out.println("inside meaning "+word);
+    public JSONObject getMeaning(@PathVariable String id) {
+        System.out.println("inside meaning "+id);
         JSONObject jsonObject = new JSONObject();
-        Dictionary odct = repository.findByWord(word);
+//        Dictionary odct = repository.findByWord(word);
+        Dictionary odct = repository.findById(id).orElse(null);
         Gson gsonObj = new Gson();
-        System.out.println("dic "+odct);
         String json = gsonObj.toJson(odct);
         jsonObject.put("meaning", json);
-        System.out.println("json "+json);
-//        Dictionary odct = repository.findById("5c1a1a2a4c3fca2114f05c46").orElse(null);
         return jsonObject;
     }
 }

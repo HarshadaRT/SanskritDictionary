@@ -31,9 +31,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Select word ::</label>
                             <select name='dropdown' id="wordList" class="form-control" id="selectWord">
-                                <%--<c:forEach items="${idAndWord}" var="dictionary">--%>
-                                <!--<option value=""></option>-->
-                                <%--</c:forEach>--%>
+                                <option value="select">----Select----</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -61,37 +59,37 @@
     });
 
     $("select[name='dropdown']").change(function () {
-        $.ajax({
-            url: "${context}" + "/dictionary/fetchMeaning/" + $('#wordList').val(),
-            dataType: 'json',
-            type: 'GET',
-            success: function (meaning) {
-                console.log("check " + meaning);
-                $.each(meaning, function (index, v) {
-                    console.log(index + " =====> " + v);
-                    var obj = $.parseJSON(v)
-//                    var data = '[{"id":"5c1b29084c3fca1e843600a2","pageId":"1519_1","word":"अधर्सांनुबन्धित्व","transliteration":"(adharmanumana)","posTag":"n. ","meaning":"inference about demerit ????- ?????????????????????? 741. 3. "}]'
-                    $.each(obj, function (key, val) {
-//                        console.log(key + "   " + val);
-                        if (key === 'meaning'){
-                            console.log(key + "   " + val);
-                            $('#meaning').text(val);
-                        }
-                        if (key === 'transliteration'){
-                            console.log(key + "   " + val);
-                            $('#transliteration').val(val);
-                        }
-                        if (key === 'posTag'){
-                            console.log(key + "   " + val);
-                            $('#posTag').val(val);
-                        }
+        if ($('#wordList').val() === "select") {
+            $('#meaning').text("");
+            $('#transliteration').val("");
+            $('#posTag').val("");
+        }
+        else {
+            $.ajax({
+                url: "${context}" + "/dictionary/fetchMeaning/" + $('#wordList').val(),
+                dataType: 'json',
+                type: 'GET',
+                success: function (meaning) {
+                    $.each(meaning, function (index, v) {
+                        var obj = $.parseJSON(v)
+                        $.each(obj, function (key, val) {
+                            if (key === 'meaning') {
+                                $('#meaning').text(val);
+                            }
+                            if (key === 'transliteration') {
+                                $('#transliteration').val(val);
+                            }
+                            if (key === 'posTag') {
+                                $('#posTag').val(val);
+                            }
+                        });
                     });
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error(textStatus, errorThrown, jqXHR);
-            }
-        });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error(textStatus, errorThrown, jqXHR);
+                }
+            });
+        }
     });
 
     function startup() {
@@ -100,14 +98,10 @@
             dataType: 'json',
             type: 'GET',
             success: function (idAndWord) {
-                console.log("check " + idAndWord);
                 $.each(idAndWord, function (index, v) {
-                    console.log(index + " =====> " + v);
-                    $(v.split(",")).each(function () {
-                        var str = this.replace("\"", "");
-                        str = str.replace("\"", "");
-                        console.log(str);
-                        $('#wordList').append("<option>" + str + "</option>");
+                    var obj = $.parseJSON(v)
+                    $.each(obj, function (key, val) {
+                        $('#wordList').append("<option value = "+key+">" + val + "</option>");
                     });
                 });
             },

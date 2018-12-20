@@ -79,9 +79,11 @@ public class DictionaryController {
     @RequestMapping(value = "/fetchMeaning/{word}", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getMeaning(@PathVariable String word) {//@Valid @RequestBody Dictionary dictionary) {
+        System.out.println("inside meaning "+word);
         JSONObject jsonObject = new JSONObject();
         Dictionary odct = repository.findByWord(word);
         Gson gsonObj = new Gson();
+        System.out.println("dic "+odct);
         String json = gsonObj.toJson(odct);
         jsonObject.put("meaning", json);
         System.out.println("json "+json);

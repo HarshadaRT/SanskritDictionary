@@ -61,16 +61,30 @@
     });
 
     $("select[name='dropdown']").change(function () {
-           $.ajax({
-            url: "${context}" + "/dictionary/fetchMeaning/"+$('#wordList').val()",
+        $.ajax({
+            url: "${context}" + "/dictionary/fetchMeaning/" + $('#wordList').val(),
             dataType: 'json',
             type: 'GET',
-            success: function (idAndWord) {
-                console.log("check " + idAndWord);
-                $.each(idAndWord, function (index, v) {
+            success: function (meaning) {
+                console.log("check " + meaning);
+                $.each(meaning, function (index, v) {
                     console.log(index + " =====> " + v);
-                    $(v.split(",")).each(function () {
-                        $('#wordList').append("<option>"+this+"</option>");
+                    var obj = $.parseJSON(v)
+//                    var data = '[{"id":"5c1b29084c3fca1e843600a2","pageId":"1519_1","word":"अधर्सांनुबन्धित्व","transliteration":"(adharmanumana)","posTag":"n. ","meaning":"inference about demerit ????- ?????????????????????? 741. 3. "}]'
+                    $.each(obj, function (key, val) {
+//                        console.log(key + "   " + val);
+                        if (key === 'meaning'){
+                            console.log(key + "   " + val);
+                            $('#meaning').text(val);
+                        }
+                        if (key === 'transliteration'){
+                            console.log(key + "   " + val);
+                            $('#transliteration').val(val);
+                        }
+                        if (key === 'posTag'){
+                            console.log(key + "   " + val);
+                            $('#posTag').val(val);
+                        }
                     });
                 });
             },
@@ -90,7 +104,10 @@
                 $.each(idAndWord, function (index, v) {
                     console.log(index + " =====> " + v);
                     $(v.split(",")).each(function () {
-                        $('#wordList').append("<option>"+this+"</option>");
+                        var str = this.replace("\"", "");
+                        str = str.replace("\"", "");
+                        console.log(str);
+                        $('#wordList').append("<option>" + str + "</option>");
                     });
                 });
             },

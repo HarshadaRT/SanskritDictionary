@@ -23,9 +23,7 @@
             <div class="row" style="padding-top: 10px;">
                 <div class="col-md-6 col-sm-6 col-lg-6">
                     <div class="img-responsive" style="overflow-y: auto; height:600px;">
-                        <%--<c:forEach items="${pageList}" var="page">--%>
-
-                        <%--</c:forEach>--%>
+                        <img class="img-rounded" src="1519_1.jpg" alt="photo1" style="width:500px;height: 800px;" />
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6">
@@ -33,8 +31,8 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Select word ::</label>
                             <select name='dropdown' id="wordList" class="form-control" id="selectWord">
-                                <%--<c:forEach items="${dictionary}" var="dictionary">--%>
-                                    <!--<option>${dictionary.word}</option>-->
+                                <%--<c:forEach items="${idAndWord}" var="dictionary">--%>
+                                <!--<option value=""></option>-->
                                 <%--</c:forEach>--%>
                             </select>
                         </div>
@@ -63,34 +61,38 @@
     });
 
     $("select[name='dropdown']").change(function () {
-        if ($(this).val() == 2) {
-            //do what u want here
-        }//u can check your desired value here
-    });
-
-    <c:forEach items="${metadata}" var="record">
-        <c:forEach items="${record.value}" var="data">
-            <c:if test="${data ne null}">
-    < tr >
-            < td >${record.key} < /td>
-            < td >${data} < /td>
-            < /tr>
-            </c:if>
-        </c:forEach>
-    </c:forEach>
-
-    function startup() {
-        $.ajax({
-            url: context + "/dictionary/" + imagePath,
+           $.ajax({
+            url: "${context}" + "/dictionary/fetchMeaning/"+$('#wordList').val()",
             dataType: 'json',
             type: 'GET',
             success: function (idAndWord) {
-                $.each(idAndWord, function (index, value) {
-                    console.log(index + " =====> " + value);
-                    alert(index + ": " + value);
-                    $('wordList').add("<option>${idAndWord.word}</option>")
+                console.log("check " + idAndWord);
+                $.each(idAndWord, function (index, v) {
+                    console.log(index + " =====> " + v);
+                    $(v.split(",")).each(function () {
+                        $('#wordList').append("<option>"+this+"</option>");
+                    });
                 });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus, errorThrown, jqXHR);
+            }
+        });
+    });
 
+    function startup() {
+        $.ajax({
+            url: "${context}" + "/dictionary/populate",
+            dataType: 'json',
+            type: 'GET',
+            success: function (idAndWord) {
+                console.log("check " + idAndWord);
+                $.each(idAndWord, function (index, v) {
+                    console.log(index + " =====> " + v);
+                    $(v.split(",")).each(function () {
+                        $('#wordList').append("<option>"+this+"</option>");
+                    });
+                });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error(textStatus, errorThrown, jqXHR);

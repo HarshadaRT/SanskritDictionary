@@ -23,7 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableMongoRepositories("in.cdac.hcdc.sanskritdictionary.repositories")
 @ComponentScan(basePackages = {"in.cdac.hcdc.sanskritdictionary"})
 @EnableAutoConfiguration
-public class SanskritDictionaryApplication extends SpringBootServletInitializer { //implements CommandLineRunner {
+public class SanskritDictionaryApplication extends SpringBootServletInitializer {//implements CommandLineRunner {
 
     @Autowired
     DictionaryRepository dictRepo;
@@ -43,12 +43,13 @@ public class SanskritDictionaryApplication extends SpringBootServletInitializer 
 //        dict = dictionaryService.parseHocrFile(hocrFile);
 //        Iterable<Dictionary> iterable = dict;
 //        
-//        dictRepo.saveAll(iterable);
+////        dictRepo.saveAll(iterable);
 //        List<Dictionary> dictionary = dictRepo.findAll();
 //        for(Dictionary dct : dictionary){
 //            idAndWord.put(dct.getId(), dct.getWord());
 //        }
-//        Dictionary odct = dictRepo.findById("5c1a1a2a4c3fca2114f05c46").orElse(null);
+//        Dictionary odct = dictRepo.findByWord("ञधर्मानुबन्ध");
+//        System.out.println("dict "+odct.toString());
 //
 //    }
 

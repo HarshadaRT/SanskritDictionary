@@ -5,6 +5,9 @@
  */
 package in.cdac.hcdc.sanskritdictionary.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import in.cdac.hcdc.sanskritdictionary.repositories.DictionaryRepository;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.json.JsonObject;
 import org.bson.types.ObjectId;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -49,22 +57,35 @@ public class DictionaryController {
         return dictionary;
     }
 
-    @RequestMapping(value = "/populate", method = RequestMethod.POST)
-    public HashMap<ObjectId, String> populateDictionary() {//@Valid @RequestBody Dictionary dictionary) {
-        ModelAndView mav = new ModelAndView();
-        HashMap<ObjectId, String> idAndWord = new HashMap<ObjectId, String>();
+    @RequestMapping(value = "/populate", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject populateDictionary() throws JsonProcessingException {//@Valid @RequestBody Dictionary dictionary) {
+        System.out.println("inside populate");
+        JSONObject jsonObject = new JSONObject();
         List<Dictionary> dictionary = repository.findAll();
-        for (Dictionary dct : dictionary) {
-            idAndWord.put(dct.getId(), dct.getWord());
+        List js = new ArrayList();
+        for (Dictionary dic : dictionary) {
+            js.add(dic.getWord());
         }
-        mav.addObject("idAndWord", idAndWord);
-        mav.setViewName("index");
-        return idAndWord;
+
+        Gson gsonObj = new Gson();
+        String json = gsonObj.toJson(js);
+
+        jsonObject.put("idAndWord", json);
+        System.out.println("check 1 " + json);
+        return jsonObject;
     }
 
-    @RequestMapping(value = "/fetchMeaning", method = RequestMethod.POST)
-    public Dictionary getMeaning() {//@Valid @RequestBody Dictionary dictionary) {
-        Dictionary odct = repository.findById("5c1a1a2a4c3fca2114f05c46").orElse(null);
-        return odct;
+    @RequestMapping(value = "/fetchMeaning/{word}", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getMeaning(@PathVariable String word) {//@Valid @RequestBody Dictionary dictionary) {
+        JSONObject jsonObject = new JSONObject();
+        Dictionary odct = repository.findByWord(word);
+        Gson gsonObj = new Gson();
+        String json = gsonObj.toJson(odct);
+        jsonObject.put("meaning", json);
+        System.out.println("json "+json);
+//        Dictionary odct = repository.findById("5c1a1a2a4c3fca2114f05c46").orElse(null);
+        return jsonObject;
     }
 }

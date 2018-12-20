@@ -13,5 +13,5 @@ import in.cdac.hcdc.sanskritdictionary.models.Dictionary;
  * @author Mahima
  */
 public interface DictionaryRepository extends MongoRepository<Dictionary, String> {
-
+   Dictionary findByWord(String word);
 }

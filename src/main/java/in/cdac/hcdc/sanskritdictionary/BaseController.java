@@ -18,23 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @EnableAutoConfiguration
 public class BaseController {
     
-        @RequestMapping("/home")
+        @RequestMapping("/")
 	public String home() {
-            return "index";
+            return "hocr";
 	}
-        
-        @RequestMapping("/msg")
-        public String msg(Map<String, Object> model){
-            model.put("message", "from cntlr");
-            model.put("path", "C:\\Users\\Mithilesh\\Pictures\\basic.jpg");
-            return "welcome";
-        }
-        
-        @RequestMapping("/uploaded")
-        public String uploaded(Map<String, Object> model){
-            System.out.println("file uploded");
-            model.put("filePath", "ok");
-            return "welcome";
-        }
 
 }

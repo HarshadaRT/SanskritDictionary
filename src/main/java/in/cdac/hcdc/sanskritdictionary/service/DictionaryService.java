@@ -9,6 +9,7 @@ import in.cdac.hcdc.hocr4j.Page;
 import in.cdac.hcdc.hocr4j.Paragraph;
 import in.cdac.hcdc.hocr4j.dom.HocrParser;
 import in.cdac.hcdc.sanskritdictionary.models.Dictionary;
+import in.cdac.hcdc.sanskritdictionary.models.Pages;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import org.apache.commons.io.FileUtils;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -34,11 +35,13 @@ public class DictionaryService {
     BufferedWriter bw2 = null;
     FileWriter fw = null;
     int lastIndex = 0;
-
-    public List<Dictionary> parseHocrFile(File file) {
+    
+    public List<Pages> parseHocrFile(File file) {
         List<Page> pages = null;
         List<Dictionary> dictionary = new ArrayList<>();
+        List<Pages> modelPage = new ArrayList<>();
         HashMap<String, String> wordDetail = new HashMap<String, String>();
+        Pages pg = new Pages();
         try {
             int i = 0;
             File f1 = new File("C:\\Users\\Mahima\\Downloads\\data\\output.txt");
@@ -47,6 +50,7 @@ public class DictionaryService {
             bw2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2), StandardCharsets.UTF_8));
             String contents = FileUtils.readFileToString(file, "UTF-8");
             pages = HocrParser.parse(contents);
+            pg.setPageId(file.getName().substring(0, file.getName().lastIndexOf(".")));
             for (Page page : pages) {
                 List<Paragraph> praList = page.getAllParagraphs();
                 for (Paragraph paragraph : praList) {
@@ -54,19 +58,20 @@ public class DictionaryService {
                     String paraText = wordDetail.get("paraText");
 
                     Dictionary dict = new Dictionary();
-                    dict.setId(ObjectId.get());
-                    dict.setPageId(file.getName().substring(0, file.getName().lastIndexOf(".")));
+                    dict.setWordId(UUID.randomUUID().toString());
                     dict.setWord(wordDetail.get("word"));
                     dict.setTransliteration(wordDetail.get("transliteration"));
                     dict.setPosTag(wordDetail.get("POS"));
                     dict.setMeaning(wordDetail.get("meaning"));
                     dictionary.add(dict);
-                    
+
                     bw1.write("Paragraph :: " + i++);
                     bw1.write("\n");
                     bw1.write(paraText);
                     bw1.write("\n");
                 }
+                pg.setWordDetails(dictionary);
+                modelPage.add(pg);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -85,7 +90,7 @@ public class DictionaryService {
                 ex.printStackTrace();
             }
         }
-        return dictionary;
+        return modelPage;
     }
 
     public HashMap<String, String> readParaText(Paragraph para, BufferedWriter bw2) throws IOException {

@@ -4,21 +4,13 @@
  * and open the template in the editor.
  */
 package in.cdac.hcdc.sanskritdictionary.models;
-
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
  *
  * @author Mahima
  */
-@Document(collection = "dictionary")
 public class Dictionary {
     
-    @Id
-    ObjectId id;
-    private String pageId;
+    private String wordId; 
     private String word;
     private String transliteration;
     private String posTag;
@@ -27,20 +19,12 @@ public class Dictionary {
     public Dictionary() {
     }
 
-    public ObjectId getId() {
-        return id;
+    public String getWordId() {
+        return wordId;
     }
 
-    public void setId(ObjectId _id) {
-        this.id = id;
-    }
-
-    public String getPageId() {
-        return pageId;
-    }
-
-    public void setPageId(String pageId) {
-        this.pageId = pageId;
+    public void setWordId(String wordId) {
+        this.wordId = wordId;
     }
 
     public String getWord() {
@@ -77,8 +61,6 @@ public class Dictionary {
 
     @Override
     public String toString() {
-        return "Dictionary{" + "id=" + id + ", pageId=" + pageId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
+        return "Dictionary{" + "id=" + wordId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
     }
-
-    
 }

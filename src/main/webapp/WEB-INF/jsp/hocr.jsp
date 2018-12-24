@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="hocr-proofreader.css"/>
     <script src="hocr-proofreader.js"></script>
 	<script>
-	 var hocrBase= 'http://localhost:8080/sansdictionary/';
+	 var hocrBase= 'http://localhost:9090/sansdictionary/';
 	 var hOCRName= '1519_1.hocr';
 	 var ImgName='1519_1.jpg';
 	</script>

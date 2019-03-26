@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : Dec 17, 2018, 3:26:17 PM
-    Author     : Harshada, Mithilesh
+    Author     : Harshada
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,64 +13,48 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Sanskrit Dictionary</title>
-    <link rel="stylesheet" href="fonts.css"/>
-    <link rel="stylesheet" href="main.css"/>
-    <link rel="stylesheet" href="hocr-proofreader.css"/>
-    <script src="hocr-proofreader.js"></script>
-	<script>
-	 var hocrBase= 'http://localhost:9090/sansdictionary/';
-	 var hOCRName= '1519_1.hocr';
-	 var ImgName='1519_1.jpg';
-	</script>
-    <script src="main.js"></script>
-</head>
-<body>
-<div class="viewport">
-    <div class="toolbar">
-        <div class="logo">Sanskrit Dictionary</div>
-        <div class="separator"></div>
-        <span>Zoom:</span>
-        <button id="zoom-page-full">Full Page</button>
-        <button id="zoom-page-width">Page Width</button>
-        <button id="zoom-original">Original</button>
-        <div class="separator"></div>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sanskrit Dictionary</title>
+    </head>
 
-        <button id="button-save">Save</button>
-    </div>
-
-    <div id="layout-container" class="container"></div>
-    <div id="editor-container" class="econtainer">
-        <div >
-            <form>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Select word ::</label>
-                    <select name='dropdown' id="wordList" class="form-control" id="selectWord">
-                        <option value="select">----Select----</option>
-                    </select>
+    <body>
+        <div class="container" style="margin-top: 70px;">
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-md-6 col-sm-6 col-lg-6">
+                    <div class="img-responsive" style="overflow-y: auto; height:600px;">
+                        <img class="img-rounded" src="1519_1.jpg" alt="photo1" style="width:500px;height: 800px;" />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Transliteration :: </label>
-                    <input type="text" class="form-control" id="transliteration" placeholder="transliteration">
+                <div class="col-md-6 col-sm-6 col-lg-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Select word ::</label>
+                            <select name='dropdown' id="wordList" class="form-control" id="selectWord">
+                                <option value="select">----Select----</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Transliteration :: </label>
+                            <input type="text" class="form-control" id="transliteration" placeholder="transliteration">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">POS Tag ::</label>
+                            <input type="text" class="form-control" id="posTag" placeholder="pos tags eg.(adj.,n.)">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Meaning and Citation ::</label>
+                            <textarea class="form-control" id="meaning" rows="3"></textarea>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">POS Tag ::</label>
-                    <input type="text" class="form-control" id="posTag" placeholder="pos tags eg.(adj.,n.)">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Meaning and Citation ::</label>
-                    <textarea class="form-control" id="meaning" rows="3"></textarea>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>
+
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
         startup();
     });
 
@@ -81,13 +65,17 @@
             $('#posTag').val("");
         }
         else {
+            var arr = $('#wordList').val().split('/');
+            var pageId = arr[0];
+            var wordId = arr[1];
             $.ajax({
-                url: "${context}" + "/dictionary/fetchMeaning/" + $('#wordList').val(),
+                url: "${context}" + "/dictionary/fetchMeaning/" + pageId + "/" +wordId,
                 dataType: 'json',
                 type: 'GET',
                 success: function (meaning) {
                     $.each(meaning, function (index, v) {
                         var obj = $.parseJSON(v)
+                        console.log(obj);
                         $.each(obj, function (key, val) {
                             if (key === 'meaning') {
                                 $('#meaning').text(val);
@@ -117,7 +105,7 @@
                 $.each(idAndWord, function (index, v) {
                     var obj = $.parseJSON(v)
                     $.each(obj, function (key, val) {
-                        $('#wordList').append("<option value = "+key+">" + val + "</option>");
+                        $('#wordList').append("<option value = " + key + ">" + val + "</option>");
                     });
                 });
             },

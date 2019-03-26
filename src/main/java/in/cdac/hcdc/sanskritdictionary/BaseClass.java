@@ -28,7 +28,7 @@ public class BaseClass {
 
     public static void main(String[] args) {
         BaseClass baseClass = new BaseClass();
-        File hocrFile = new File("C:\\Users\\Jyoti\\Pictures\\sanskrit-dictionary\\1519_1.hocr");
+        File hocrFile = new File("C:\\Users\\mahima\\Documents\\sanskrit-dictionary\\1519_1.hocr");
 //        File hocrFile = new File("D:\\Jyoti-backup\\project-folders\\sanskritDictionary\\data\\1519_1.html");
         baseClass.parseHocrFile(hocrFile);
     }
@@ -37,8 +37,8 @@ public class BaseClass {
         List<Page> pages = null;
         try {
             int i = 0;
-            File f1 = new File("C:\\Users\\Jyoti\\Pictures\\sanskrit-dictionary\\output.txt");
-            File f2 = new File("C:\\Users\\Jyoti\\Pictures\\sanskrit-dictionary\\words.txt");
+            File f1 = new File("C:\\Users\\mahima\\Documents\\sanskrit-dictionary\\output.txt");
+            File f2 = new File("C:\\Users\\mahima\\Documents\\sanskrit-dictionary\\words.txt");
             bw1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f1), StandardCharsets.UTF_8));
             bw2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f2), StandardCharsets.UTF_8));
             String contents = FileUtils.readFileToString(file, "UTF-8");

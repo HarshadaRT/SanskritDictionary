@@ -65,13 +65,17 @@
             $('#posTag').val("");
         }
         else {
+            var arr = $('#wordList').val().split('/');
+            var pageId = arr[0];
+            var wordId = arr[1];
             $.ajax({
-                url: "${context}" + "/dictionary/fetchMeaning/" + $('#wordList').val(),
+                url: "${context}" + "/dictionary/fetchMeaning/" + pageId + "/" +wordId,
                 dataType: 'json',
                 type: 'GET',
                 success: function (meaning) {
                     $.each(meaning, function (index, v) {
                         var obj = $.parseJSON(v)
+                        console.log(obj);
                         $.each(obj, function (key, val) {
                             if (key === 'meaning') {
                                 $('#meaning').text(val);
@@ -101,7 +105,7 @@
                 $.each(idAndWord, function (index, v) {
                     var obj = $.parseJSON(v)
                     $.each(obj, function (key, val) {
-                        $('#wordList').append("<option value = "+key+">" + val + "</option>");
+                        $('#wordList').append("<option value = " + key + ">" + val + "</option>");
                     });
                 });
             },

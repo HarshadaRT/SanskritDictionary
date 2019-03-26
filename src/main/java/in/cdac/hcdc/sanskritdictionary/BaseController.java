@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package in.cdac.hcdc.sanskritdictionary;
-
+import java.util.Map;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +20,7 @@ public class BaseController {
     
         @RequestMapping("/")
 	public String home() {
-            return "index";
+            return "hocr";
 	}
-        
-        
 
 }

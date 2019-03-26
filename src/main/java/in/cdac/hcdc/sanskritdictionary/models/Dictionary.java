@@ -63,6 +63,4 @@ public class Dictionary {
     public String toString() {
         return "Dictionary{" + "id=" + wordId + ", word=" + word + ", transliteration=" + transliteration + ", posTag=" + posTag + ", meaning=" + meaning + '}';
     }
-
-    
 }
